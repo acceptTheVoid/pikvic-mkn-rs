@@ -12,7 +12,7 @@ const NAMES: [&str; 4] = [
     "Kate",
 ];
 
-// static mut COUNTER: usize = 0;
+static mut COUNTER: usize = 0;
 
 #[get("/")]
 fn index() -> Template {
@@ -20,11 +20,15 @@ fn index() -> Template {
     let n = rng.gen_range(0..NAMES.len());
     let c = rng.gen_range(0..3);
 
-    // unsafe { COUNTER += 1 }
+    unsafe { COUNTER += 1 }
     let msg = format!("Hello, {}", NAMES[n]);
     let color = ["red", "blue", "black"][c];
     
-    let ctx = context! { msg: msg, color: color, };
+    let ctx = context! { 
+        msg: msg, 
+        color: color, 
+        counter: unsafe { COUNTER }, 
+    };
     Template::render("template", &ctx)
 }
 

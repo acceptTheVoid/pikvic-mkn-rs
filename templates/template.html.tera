@@ -12,8 +12,8 @@
 
 <body>
     <h1 style="color: {{ color }}">{{ msg }}!</h1>
+    <h3>Количество заходов на страницу: {{ counter }}</h3>
     {#
-    <h3>Количество заходов на страницу: {{ counter }}</h3> #} {#
     <script src="/index.js"></script> #}
 </body>
 
