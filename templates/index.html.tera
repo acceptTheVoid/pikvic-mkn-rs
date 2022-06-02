@@ -24,6 +24,7 @@
         <div class="content">Content: {{ post.content }}</div>
     </article>
     {% endfor %}
+    <a href="/add_post">Create new post</a>
 </body>
 
 </html>

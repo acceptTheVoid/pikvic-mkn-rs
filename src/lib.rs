@@ -1,5 +1,7 @@
 #[macro_use]
 pub extern crate rocket;
+#[macro_use]
+pub extern crate rocket_dyn_templates;
 
 pub use rocket::State;
 pub use rocket::form::{Form, Lenient};
@@ -16,13 +18,5 @@ pub use std::path::{Path, PathBuf};
 pub use std::io;
 pub use std::sync::atomic::{Ordering, AtomicUsize};
 
-use rocket_test::{db::*, routes::*};
-
-#[launch]
-fn rocket() -> _ {
-    rocket::build()
-        .mount("/", FileServer::from("static/"))
-        .mount("/", routes![index, add_post, append_post])
-        .manage(Posts { posts: Mutex::new(Vec::new()) })
-        .attach(Template::fairing())
-}
+pub mod routes;
+pub mod db;
