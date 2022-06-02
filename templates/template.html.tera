@@ -6,15 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tera test</title>
-    {#
-    <link rel="stylesheet" href="/styles.css"> #}
+    <style>
+        * {
+            border: 3px solid #00000050;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
-    <h1 style="color: {{ color }}">{{ msg }}!</h1>
-    <h3>Количество заходов на страницу: {{ counter }}</h3>
-    {#
-    <script src="/index.js"></script> #}
+    <h1>My Tera Test</h1>
+    {% for post in posts %}
+    <article>
+        <div class="user">User: {{ post.user }}</div>
+        <div class="title">Title: {{ post.title }}</div>
+        <div class="date">Date: {{ post.date }}</div>
+        <div class="content">Content: {{ post.content }}</div>
+    </article>
+    {% endfor %}
 </body>
 
 </html>

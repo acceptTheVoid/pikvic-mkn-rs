@@ -1,41 +1,59 @@
 #[macro_use] extern crate rocket;
 #[macro_use] extern crate rocket_dyn_templates;
 
-use rand::Rng;
-use rocket::fs::FileServer;
+use rocket::{fs::FileServer, serde::{Serialize, Deserialize}};
 use rocket_dyn_templates::Template;
 
-const NAMES: [&str; 4] = [
-    "Alex",
-    "Pete",
-    "Arkadiy",
-    "Kate",
-];
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct Post {
+    user: &'static str,
+    title: &'static str,
+    content: &'static str,
+    date: &'static str,
+}
 
-static mut COUNTER: usize = 0;
+const POSTS: [Post; 3] = [
+    Post {
+        user: "Pete",
+        title: "Warning!",
+        content: "Lorem ipsum hello world!",
+        date: "29-02-1988"
+    },  Post {
+        user: "Alex",
+        title: "Caution!",
+        content: "Text 2 is ipsum hello world!",
+        date: "38-02-1988"
+    }, Post {
+        user: "Mary",
+        title: "Hey!",
+        content: "Go here!",
+        date: "38-02-1988"
+    }
+];
 
 #[get("/")]
 fn index() -> Template {
-    let mut rng = rand::thread_rng();
-    let n = rng.gen_range(0..NAMES.len());
-    let c = rng.gen_range(0..3);
-
-    unsafe { COUNTER += 1 }
-    let msg = format!("Hello, {}", NAMES[n]);
-    let color = ["red", "blue", "black"][c];
-    
     let ctx = context! { 
-        msg: msg, 
-        color: color, 
-        counter: unsafe { COUNTER }, 
+        posts: POSTS,
     };
     Template::render("template", &ctx)
+}
+
+#[get("/hello?<name>")]
+fn hello(name: Option<&str>) -> String {
+    let name = match name {
+        Some(name) => name,
+        None => "George",
+    };
+
+    format!("Hello, {name}!")
 }
 
 #[launch]
 fn rocket() -> _ {
     rocket::build()
         .mount("/", FileServer::from("static/"))
-        .mount("/", routes![index])
+        .mount("/", routes![index, hello])
         .attach(Template::fairing())
 }
