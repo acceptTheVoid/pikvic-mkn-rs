@@ -1,22 +1,24 @@
-#[macro_use]
-pub extern crate rocket;
-#[macro_use]
-pub extern crate rocket_dyn_templates;
-
-pub use rocket::State;
-pub use rocket::form::{Form, Lenient};
-pub use rocket::fs::FileServer;
-pub use rocket::response::Redirect;
-pub use rocket::tokio::io::{AsyncReadExt, AsyncWriteExt};
-pub use rocket::tokio::fs::File;
-pub use rocket::serde::{Serialize, Deserialize};
-
-pub use rocket::tokio::sync::Mutex;
-pub use rocket_dyn_templates::Template;
-
-pub use std::path::{Path, PathBuf};
-pub use std::io;
-pub use std::sync::atomic::{Ordering, AtomicUsize};
-
+pub mod models;
 pub mod routes;
-pub mod db;
+pub mod schema;
+pub mod state;
+
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate rocket;
+#[macro_use]
+extern crate rocket_dyn_templates;
+
+use diesel::{sqlite::SqliteConnection, Connection};
+
+use std::env;
+
+pub fn connect() -> SqliteConnection {
+    dotenv::dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+    SqliteConnection::establish(&database_url)
+        .expect(&format!("Error connection to {database_url}!"))
+}

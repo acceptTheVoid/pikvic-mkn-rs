@@ -1,0 +1,5 @@
+{% extends "base" %} {% block title %} Item {{item.name}} {% endblock title %} {% block content %}
+<h1>Item {{ item.name }}</h1>
+<h2>Price: {{ item.price }}</h2>
+<p>{{ item.description }}</p>
+{% endblock content %}

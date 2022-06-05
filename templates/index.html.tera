@@ -1,30 +1,9 @@
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tera test</title>
-    <style>
-        * {
-            border: 3px solid #00000050;
-            padding: 0;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>My Tera Test</h1>
-    {% for post in posts %}
-    <article>
-        <div class="user">User: {{ post.user }}</div>
-        <div class="title">Title: {{ post.title }}</div>
-        <div class="date">Date: {{ post.date }}</div>
-        <div class="content">Content: {{ post.content }}</div>
-    </article>
+{% extends "base" %} {% block title %} Inet Magaz Main Page {% endblock title %} {% block content %}
+<h1>INET MAGAZ #1 CASINO</h1>
+<h3>Items:</h3>
+<ul>
+    {% for item in items %}
+    <li><a href="/items/{{item.name}}">{{ item.name }} - {{ item.price }}</a></li>
     {% endfor %}
-    <a href="/add_post">Create new post</a>
-</body>
-
-</html>
+</ul>
+{% endblock content %}
