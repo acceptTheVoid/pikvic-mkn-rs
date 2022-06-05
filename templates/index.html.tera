@@ -1,9 +1,35 @@
-{% extends "base" %} {% block title %} Inet Magaz Main Page {% endblock title %} {% block content %}
-<h1>INET MAGAZ #1 CASINO</h1>
-<h3>Items:</h3>
-<ul>
-    {% for item in items %}
-    <li><a href="/items/{{item.name}}">{{ item.name }} - {{ item.price }}</a></li>
-    {% endfor %}
-</ul>
-{% endblock content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            color: grey;
+        }
+    </style>
+</head>
+
+<body>
+    {% if cart %}
+    <h1>Cart:</h1>
+    <ul>
+        {% for item in cart %}
+        <li><a href="/cart/remove?id={{ loop.index - 1 }}">X</a>{{ item.name }} - {{ item.price }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h1>Items:</h1>
+    <ul>
+        {% for item in items %}
+        <li><a href="/{{ loop.index - 1 }}">{{ item.name }} - {{ item.price }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

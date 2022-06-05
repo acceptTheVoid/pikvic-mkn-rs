@@ -1,6 +1,0 @@
-CREATE TABLE items (
-    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL,
-    price INTEGER NOT NULL,
-    description TEXT NOT NULL
-);
