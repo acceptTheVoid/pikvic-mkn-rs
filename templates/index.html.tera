@@ -5,31 +5,84 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>News Site</title>
     <style>
-        body {
-            margin: 0;
-            color: grey;
+        .news-item {
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px black solid;
+        }
+        
+        .news-item__title {
+            cursor: pointer;
         }
     </style>
+    <script>
+        async function getContent(id) {
+            let element = document.getElementById(`news-item${id}`);
+            console.log(element)
+            if (element.hidden) {
+                url = `http://127.0.0.1:8000/news/${id}`
+                const response = await fetch(url);
+                console.log(response);
+                const content = await response.json();
+                console.log(content);
+                element.innerHTML = content.content;
+                element.hidden = false;
+            } else {
+                element.innerHTML = '';
+                element.hidden = true;
+            }
+        }
+
+        async function add() {
+            let title = document.getElementById('title').value;
+            let content = document.getElementById('content').value;
+            console.log(title, content)
+            url = `http://127.0.0.1:8000/news`
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    content: content
+                })
+            });
+            console.log(response)
+            const data = await response.json();
+            console.log(data)
+            let item = document.createElement('div');
+            item.className = 'news-item';
+            let html = `<h2 class="news-item__title" onclick="getContent(${data.id})">
+                    ${data.title}
+                </h2>
+                <p class="news-item__content" id="news-item${data.id}" hidden>
+                </p>`
+            item.innerHTML = html;
+            document.getElementById('news').appendChild(item);
+        }
+    </script>
 </head>
 
 <body>
-    {% if cart %}
-    <h1>Cart:</h1>
-    <ul>
-        {% for item in cart %}
-        <li><a href="/cart/remove?id={{ loop.index - 1 }}">X</a>{{ item.name }} - {{ item.price }}</li>
+    <h1>Breaking news</h1>
+    <div class="news-list" id="news">
+        {% for item in news %}
+        <div class="news-item">
+            <h2 class="news-item__title" onclick="getContent({{ item.id }})">
+                {{ item.title }}
+            </h2>
+            <p class="news-item__content" id="news-item{{ item.id }}" hidden>
+            </p>
+        </div>
         {% endfor %}
-    </ul>
-    {% endif %}
+    </div>
+    <label for="title">Title:</label><input type="text" name="title" id="title">
+    <label for="content">Content:</label><input type="text" name="content" id="content">
+    <button onclick="add()">Add</button>
 
-    <h1>Items:</h1>
-    <ul>
-        {% for item in items %}
-        <li><a href="/{{ loop.index - 1 }}">{{ item.name }} - {{ item.price }}</a></li>
-        {% endfor %}
-    </ul>
 </body>
 
 </html>
