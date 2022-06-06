@@ -20,3 +20,19 @@ pub fn get_items(cat_id: i32, conn: &SqliteConnection) -> Vec<Item> {
         .load::<Item>(conn)
         .expect("Failed fetching items")
 }
+
+pub fn get_users(username: &str, conn: &SqliteConnection) -> Vec<User> {
+    use crate::schema::users::{self, dsl};
+    users::table
+        .filter(dsl::username.eq(username))
+        .load::<User>(conn)
+        .expect("Failed fetching items")
+}
+
+pub fn insert_user(user: &NewUser, conn: &SqliteConnection) {
+    use crate::schema::users;
+    diesel::insert_into(users::table)
+        .values(user)
+        .execute(conn)
+        .expect("Failed inserting into table");
+}

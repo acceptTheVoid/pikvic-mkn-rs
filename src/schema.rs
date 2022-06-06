@@ -14,7 +14,16 @@ table! {
     }
 }
 
+table! {
+    users (id) {
+        id -> Integer,
+        username -> Text,
+        password -> Text,
+    }
+}
+
 allow_tables_to_appear_in_same_query!(
     categories,
     items,
+    users,
 );

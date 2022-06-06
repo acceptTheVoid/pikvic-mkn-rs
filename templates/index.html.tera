@@ -9,6 +9,12 @@
 </head>
 
 <body>
+    {% if username %}
+    <p>Hello, {{ username }}</p>
+    <a href="/logout">Logout</a> {% else %}
+    <p>Hello, Guest!</p>
+    <a href="/login">Login</a> {% endif %}
+
     <h1>THE MAGAZ with database</h1>
     <ul>
         {% for category in categories %}
