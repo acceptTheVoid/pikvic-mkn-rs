@@ -9,14 +9,18 @@
 </head>
 
 <body>
-    <h1>THE MAGAZ with database</h1>
+    <h1>Items for category {{ category.name }}</h1>
+    {% if items %}
     <ul>
-        {% for category in categories %}
-        <li>
-            <a href="/{{ category.id }}">{{ category.name }}</a>
-        </li>
+        {% for item in items %}
+        <li>{{ item.name }} - {{ item.price }}</li>
         {% endfor %}
     </ul>
+    {% else %}
+    <h2>No items</h2>
+    {% endif %}
+
+    <a href="/">Back</a>
 </body>
 
 </html>
